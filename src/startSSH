@@ -1,0 +1,16 @@
+#!/bin/bash
+cd "$( dirname "${BASH_SOURCE[0]}")"
+set -x
+
+login=$(sed '4!d' variables.conf)
+pass=$(sed '5!d' variables.conf)
+remote_ip=$(sed '2!d' variables.conf)
+remote_port=$(sed '3!d' variables.conf)
+bind_port=$(sed '7!d' variables.conf)
+
+if [ -f rsa_key.pem ]; 
+	then 
+		autossh -i rsa_key.pem -N -4 -D $bind_port -p $remote_port $login@$remote_ip -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=10 -o ServerAliveCountMax=3 -o TCPKeepAlive=yes -o ForwardAgent=no -o ForwardX11=no -o Compression=yes -o LogLevel=ERROR
+	else
+		sshpass -p $pass ssh -N -4 -D $bind_port -p $remote_port $login@$remote_ip -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=10 -o ServerAliveCountMax=3 -o TCPKeepAlive=yes -o ForwardAgent=no -o ForwardX11=no -o Compression=yes -o LogLevel=ERROR
+fi

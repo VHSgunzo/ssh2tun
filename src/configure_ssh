@@ -1,0 +1,33 @@
+#!/bin/bash
+cd "$( dirname "${BASH_SOURCE[0]}")"
+
+read -p "Enter SSH IP (89.243.157.254) > " remote_ip
+sed -i "2c\*$remote_ip*" variables.conf
+
+read -p "Enter SSH port (22) > " remote_port
+sed -i "3c\*$remote_port*" variables.conf
+
+read -p "Enter SSH login (user) > " login
+sed -i "4c\*$login*" variables.conf
+
+read -p "SSH access with pass or rsa key? (y - pass / n - rsa key) > " access
+
+if [[ ! $access =~ ^[Nn]$ ]]; 
+then read -p "Enter SSH password (pass) > " pass
+    sed -i "5c\*$pass*" variables.conf
+    if [ -f rsa_key.pem ]; 
+	then 
+		sudo rm -r rsa_key.pem
+    fi
+    
+elif [[ ! $access =~ ^[Yy]$ ]]; 
+then read -p "Enter path to SSH rsa key (~/rsa_key.pem) > " rsa_key
+    sed -i "5c\ " variables.conf
+    cp -f -r $rsa_key rsa_key.pem
+    sudo chmod 400 rsa_key.pem
+fi
+
+read -p "Enter SSH local bind port (1088) > " bind_port
+sed -i "7c\*$bind_port*" variables.conf
+
+cat variables.conf | tr -d '*' > variables.new && mv variables.new variables.conf
