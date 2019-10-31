@@ -1,5 +1,5 @@
 # ssh2tun
-This script creates a namespace with proxy and creates a proxy Wi-Fi access point with DNS encryption through DNSCrypt-Proxy
+This script creates a namespace with ssh proxy and creates a ssh proxy Wi-Fi access point with DNS encryption through DNSCrypt-Proxy
 For proper operation, you need to run this script from xfce4-terminal, it will be installed along with the rest of the dependencies when you select the appropriate script menu item.
 To get started:
 
