@@ -6,6 +6,8 @@
 * Automatic installation of dependencies and DNSCrypt-Proxy
 * Support SSH password or rsa key
 * Automatic reconnection to SSH when disconnected
+* Wi-Fi access point settings
+* Сhange mac address Wi-Fi access points
 * SSH proxy for the whole system
 * Creates a namespace for SSH proxy
 * SSH proxy for the whole system and namespace
