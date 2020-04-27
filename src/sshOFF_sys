@@ -17,12 +17,16 @@ sudo ip addr del dev $bad_tun local 10.9.3.18 peer 10.9.3.17
 sudo ip -4 addr flush label $bad_tun
 sudo ip tuntap del dev $bad_tun mode tun
 sshtty=$(sed '1!d' /tmp/sshtty)
-sshtty_pid=$(ps -ft $sshtty | awk 'NR==4{print$2}')
-sudo kill -2 $sshtty_pid
+sudo ps -ft $sshtty | awk 'NR==3{print$2}' > /tmp/sshtty_pid && ps -ft $sshtty | awk 'NR==4{print$2}' >> /tmp/sshtty_pid
+sudo kill -9 $(cat /tmp/sshtty_pid)
 sudo ./ttyecho -n /dev/pts/$sshtty exit
-sudo iptables -F
-sudo iptables -X
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
 sudo iptables -t nat -F
 sudo iptables -t nat -X
+sudo iptables -t mangle -F
+sudo iptables -F
+sudo iptables -X
 sudo iptables-restore < /tmp/iptables.conf
-rm -r /tmp/sshtty /tmp/sshttyold /tmp/sshttynew /tmp/iptables.conf
+rm -r /tmp/sshtty /tmp/sshttyold /tmp/sshttynew /tmp/iptables.conf /tmp/sshtty_pid

@@ -13,9 +13,9 @@ then ./dep_install
 
 fi
 
-sleep 2
+sleep 3
 sudo apt update
-sudo apt install bash util-linux procps hostapd iproute2 iw haveged dnsmasq iptables xfce4-terminal net-tools autossh sshpass openssh-client -y
+sudo apt install bash util-linux procps hostapd iproute2 iw haveged dnsmasq iptables xfce4-terminal net-tools sshpass openssh-client -y
 clear
 echo -e -n "$BLUE"
 read -p "Create symblink for ssh2tun to /bin (y/n) > " symblink
@@ -28,7 +28,7 @@ then dir_script=$(pwd | rev | cut -c 5- | rev)
 	sudo mv -f /tmp/dir_script /bin/ssh2tun
 	sudo chmod +x /bin/ssh2tun
 	clear
-	echo -e -n "$RED After close this just write in terminal ssh2tun"
+	echo -e -n "$RED After close this just write ssh2tun in xfce4-terminal"
 	sleep 5
 
 elif [[ ! $symblink =~ ^[Yy]$ ]];

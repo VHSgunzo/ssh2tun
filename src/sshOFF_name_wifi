@@ -15,9 +15,9 @@ sudo mv /etc/NetworkManager/NetworkManager.old /etc/NetworkManager/NetworkManage
 nm_pid=$(sudo pidof NetworkManager)
 sudo kill -HUP $nm_pid
 sshtty=$(sed '1!d' /tmp/sshtty)
-sshtty_pid=$(ps -ft $sshtty | awk 'NR==4{print$2}')
-sudo kill -2 $sshtty_pid
+sudo ps -ft $sshtty | awk 'NR==3{print$2}' > /tmp/sshtty_pid && ps -ft $sshtty | awk 'NR==4{print$2}' >> /tmp/sshtty_pid
+sudo kill -9 $(cat /tmp/sshtty_pid)
 sudo ./ttyecho -n /dev/pts/$sshtty exit
-rm -r /tmp/sshtty /tmp/sshttyold /tmp/sshttynew
+rm -r /tmp/sshtty /tmp/sshttyold /tmp/sshttynew /tmp/sshtty_pid
 
 xfce4-terminal --geometry=62x24 --hide-scrollbar --hide-toolbar --hide-borders --working-directory=$dist -e "./nameOFF_Wi-Fi"
